@@ -27,4 +27,8 @@ const userSchema = new mongoose.Schema({
     enum: ["admin", "voter"],
     default: "voter",
   },
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });
