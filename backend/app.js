@@ -19,10 +19,9 @@ const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
 //routes imports
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
-
-app.enable("trust proxy");
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
@@ -66,6 +65,7 @@ app.use((req, res, next) => {
 });
 
 //Backend routes
+app.use("/api/v1/users", userRoutes);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl}`, 404));
