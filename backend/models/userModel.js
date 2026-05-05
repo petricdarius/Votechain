@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const validator = require("validator");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const AppError = require("../utils/appError");
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -17,6 +18,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     required: [true, "A user must have an email name."],
     validate: [validator.isEmail, "Please provide a valid email address."],
+    unique: true,
   },
   password: {
     type: String,
@@ -44,6 +46,13 @@ const userSchema = new mongoose.Schema({
     required: [true, "All users must enter their CNP."],
     minLength: [13, "CNP must be 13 characters long."],
     maxLength: [13, "CNP must be 13 characters long."],
+    unique: true,
+    validate: {
+      validator: function (val) {
+        return isCorrectCNP(val);
+      },
+      message: "Invalid CNP.",
+    },
   },
   active: {
     type: Boolean,
@@ -57,6 +66,24 @@ userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 13);
   this.passwordConfirm = undefined;
 });
+
+function isCorrectCNP(CNP) {
+  var number = "279146358279";
+  let sum = 0;
+
+  for (let i = 0; i < number.length; i++) {
+    sum += number[i] * CNP[i];
+  }
+
+  const rest = sum % 11;
+  let control;
+  if (rest > 10) return false;
+
+  if (rest === 10) control = 1;
+  else control = rest;
+
+  return control === parseInt(CNP[CNP.length - 1]);
+}
 
 userSchema.methods.checkPass = async (currPass, newPass) => {
   return await bcrypt.compare(newPass, currPass);
