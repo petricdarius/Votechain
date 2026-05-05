@@ -1,3 +1,28 @@
 backend/node_modules
 backend/config.env
 backend/package-lock.json
+
+# Logs
+votechain-frontend/logs
+votechain-frontend/*.log
+votechain-frontend/npm-debug.log*
+votechain-frontend/yarn-debug.log*
+votechain-frontend/yarn-error.log*
+votechain-frontend/pnpm-debug.log*
+votechain-frontend/lerna-debug.log*
+
+votechain-frontend/node_modules
+votechain-frontend/dist
+votechain-frontend/dist-ssr
+votechain-frontend/*.local
+
+# Editor directories and files
+votechain-frontend/.vscode/*
+votechain-frontend/!.vscode/extensions.json
+votechain-frontend/.idea
+votechain-frontend/.DS_Store
+votechain-frontend/*.suo
+votechain-frontend/*.ntvs*
+votechain-frontend/*.njsproj
+votechain-frontend/*.sln
+votechain-frontend/*.sw?
