@@ -1,18 +1,78 @@
-import { useForm } from "react-hook-form" 
+import { useForm } from "react-hook-form";
+import useAuth from "../hooks/useAuth";
+import { motion } from "framer-motion";
 
 export default function Login() {
-    const {register, handleSubmit, onError} = useForm();
+  const { register, handleSubmit, onError } = useForm();
+  const { mutate, isLoading } = useAuth();
 
-    function submit(data){
-        console.log(data)
-        //bla  bla
-    }
+  function submit(data) {
+    mutate(data);
+  }
 
   return (
     <form onSubmit={handleSubmit(submit, onError)}>
-        <input type="email" id="email" {...register("email", {required: "Required field"})} />
-        <input type="password" id="password" {...register("password", {required: "Required field"})} />
-        <button>Login</button>
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
+        {/* Background glow */}
+        <div className="absolute w-[500px] h-[500px] bg-purple-600 opacity-20 blur-3xl rounded-full top-10 left-10"></div>
+        <div className="absolute w-[400px] h-[400px] bg-blue-600 opacity-20 blur-3xl rounded-full bottom-10 right-10"></div>
+
+        <h1 className="text-white text-6xl font-bold mb-6 tracking-wide">
+          VoteChain
+        </h1>
+
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative z-10 backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 w-full max-w-md shadow-2xl"
+        >
+          {/* Title */}
+          <h2 className="text-3xl font-bold text-white text-center mb-6">
+            Login
+          </h2>
+
+          {/* Inputs */}
+          <div className="space-y-4">
+            <input
+              type="email"
+              id="email"
+              placeholder="Email"
+              className="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+              {...register("email", { required: "Required field" })}
+            />
+
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              {...register("password", { required: "Required field" })}
+              className="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+            />
+          </div>
+
+          {/* Button */}
+          <button
+            disabled={isLoading}
+            className="mt-6 w-full py-3 rounded-lg bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold hover:scale-105 transition"
+          >
+            Login
+          </button>
+
+          {/* Divider */}
+          <div className="flex items-center my-6">
+            <div className="flex-1 h-px bg-white/10"></div>
+            <span className="px-3 text-gray-400 text-sm">or</span>
+            <div className="flex-1 h-px bg-white/10"></div>
+          </div>
+
+          {/* Footer */}
+          <p className="text-gray-400 text-sm text-center mt-6">
+            Don’t have an account?{" "}
+            <span className="text-purple-400 cursor-pointer">Sign up</span>
+          </p>
+        </motion.div>
+      </div>
     </form>
   );
 }
