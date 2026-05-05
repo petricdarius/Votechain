@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../hooks/useAuth";
 import { motion } from "framer-motion";
+import { NavLink } from "react-router-dom";
 
 export default function Login() {
   const { register, handleSubmit, onError } = useForm();
@@ -69,7 +70,9 @@ export default function Login() {
           {/* Footer */}
           <p className="text-gray-400 text-sm text-center mt-6">
             Don’t have an account?{" "}
-            <span className="text-purple-400 cursor-pointer">Sign up</span>
+            <NavLink className="text-purple-400 cursor-pointer" to="/signup">
+              Sign up
+            </NavLink>
           </p>
         </motion.div>
       </div>
