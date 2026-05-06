@@ -20,6 +20,7 @@ const globalErrorHandler = require("./controllers/errorController");
 
 //routes imports
 const userRoutes = require("./routes/userRoutes");
+const electionRoutes = require("./routes/electionRoutes");
 
 const app = express();
 
@@ -66,6 +67,7 @@ app.use((req, res, next) => {
 
 //Backend routes
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/elections", electionRoutes);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl}`, 404));

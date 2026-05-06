@@ -8,7 +8,6 @@ const factory = require("./handlerFactory");
 
 const multerStorage = multer.memoryStorage();
 
-// * used to test for file types
 const multerFilter = (req, file, callbackFunction) => {
   if (file.mimetype.startsWith("image")) {
     callbackFunction(null, true);
@@ -28,8 +27,6 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 
-// * 'photo' stands for the name in the FORM
-// * single means only one upload
 exports.uploadUserPhoto = upload.single("photo");
 
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {

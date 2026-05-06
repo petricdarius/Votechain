@@ -6,7 +6,7 @@ const { promisify } = require("util");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_COOKIE_EXPIRES_IN,
+    expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
@@ -83,7 +83,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError("Please log in to access this feature.", 401));
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  const user = await User.findById(decoded);
+  const user = await User.findById(decoded.id);
   if (!user) return next(new AppError("The user no longer exists.", 401));
 
   req.user = user;

@@ -60,11 +60,17 @@ exports.getOne = (Model) =>
 
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
-    const docs = await Model.find();
+    let filter = {};
+    if (req.params.id) filter = { election: req.params.tourId };
+    const features = new APIFeatures(Model.find(filter), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .pagination();
+    const docs = await features.query;
 
     res.status(200).json({
       status: `success`,
-      requestedAt: req.requestTime,
       results: docs.length,
       data: {
         docs,
