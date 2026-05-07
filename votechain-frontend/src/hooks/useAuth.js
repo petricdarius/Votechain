@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { loginApi, signUpApi } from "../services/apiAuth";
+import { loginApi, logout, signUpApi } from "../services/apiAuth";
 import { useNavigate } from "react-router-dom";
 
 export default function useAuth() {
@@ -41,4 +41,20 @@ export function useSignUp() {
   });
 
   return { signUpMutate, isLoading };
+}
+
+export function useLogout() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { mutate: logoutMutate, isLoading } = useMutation({
+    mutationFn: () => logout(),
+    onSuccess: (data) => {
+      console.log("Logout succesfull: ", data);
+      localStorage.removeItem("token");
+      queryClient.removeQueries();
+      navigate("/login", { replace: true });
+    },
+  });
+
+  return { logoutMutate, isLoading };
 }

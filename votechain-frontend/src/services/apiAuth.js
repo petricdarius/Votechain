@@ -27,3 +27,16 @@ export async function signUpApi(data) {
 
   return result;
 }
+
+export async function logout() {
+  let response = await fetch("http://127.0.0.1:5000/api/v1/users/logout", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  let result = await response.json();
+  console.log(result);
+
+  return result;
+}
