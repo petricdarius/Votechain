@@ -31,6 +31,7 @@
     "morgan": "^1.10.1",
     "multer": "^2.1.1",
     "ndb": "^1.1.5",
+    "node-cron": "^4.2.1",
     "nodemailer": "^7.0.12",
     "nodemon": "^3.1.11",
     "parcel-bundler": "^1.12.5",

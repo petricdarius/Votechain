@@ -1,3 +1,6 @@
+//cron task
+require("./utils/cronTask");
+
 //pre-installed
 const path = require("path");
 const express = require("express");
