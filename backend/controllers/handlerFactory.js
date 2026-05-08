@@ -61,7 +61,7 @@ exports.getOne = (Model, populateOptions) =>
     });
   });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, populateOptions) =>
   catchAsync(async (req, res, next) => {
     let filter = {};
     if (req.params.id) filter = { election: req.params.tourId };
@@ -70,6 +70,8 @@ exports.getAll = (Model) =>
       .sort()
       .limitFields()
       .pagination();
+    if (populateOptions)
+      features.query = features.query.populate(populateOptions);
     const docs = await features.query;
 
     res.status(200).json({

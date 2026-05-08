@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const voteSchema = new mongoose.Schema({
-  userId: {
+  voterId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -12,7 +12,8 @@ const voteSchema = new mongoose.Schema({
     required: true,
   },
   chosenCandidate: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Candidate",
     required: true,
   },
   date: {

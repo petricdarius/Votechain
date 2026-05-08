@@ -32,13 +32,6 @@ const electionSchema = new mongoose.Schema({
   },
 });
 
-// electionSchema.pre("save", function (next) {
-//   if (this.active == true && this.candidates.length < 2)
-//     return next(
-//       new AppError("An active election must have at least 2 candidates.", 400),
-//     );
-// });
-
 const Election = mongoose.model("Election", electionSchema);
 
 module.exports = Election;
