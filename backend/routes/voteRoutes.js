@@ -14,14 +14,14 @@ router.get(
 
 router.get(
   "/myVotes",
-  authController.restrictTo("user"),
+  authController.restrictTo("voter"),
   voteController.getMyVotes,
 );
 
 router.get("/:id", voteController.getVote);
 router.post(
   "/election/:electionId",
-  authController.restrictTo("user"),
+  authController.restrictTo("voter"),
   voteController.createVote,
 );
 

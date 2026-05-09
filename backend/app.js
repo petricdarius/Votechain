@@ -60,7 +60,7 @@ app.use(xss());
 
 app.use(compression());
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors());
 app.options("*", cors());
 
 app.use(express.static(path.join(__dirname, "public")));
