@@ -1,5 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { loginApi, logout, signUpApi } from "../services/apiAuth";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getCurrentUser,
+  loginApi,
+  logout,
+  signUpApi,
+} from "../services/apiAuth";
 import { useNavigate } from "react-router-dom";
 
 export default function useAuth() {
@@ -57,4 +62,13 @@ export function useLogout() {
   });
 
   return { logoutMutate, isLoading };
+}
+
+export function useCheckLogin() {
+  const { isLoading, data: isAuthenticated } = useQuery({
+    queryKey: ["user"],
+    queryFn: getCurrentUser,
+  });
+  console.log(isAuthenticated);
+  return { isLoading, isAuthenticated };
 }

@@ -1,14 +1,21 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCheckLogin } from "../hooks/useAuth";
 
 function ProtectedRoute({ children }) {
-  const token = localStorage.getItem("token");
+  const { isLoading, isAuthenticated } = useCheckLogin();
   const navigate = useNavigate();
 
-  if (!token) {
-    navigate("/login");
-  }
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
 
-  return children;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isAuthenticated) return children;
 }
 
 export default ProtectedRoute;

@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import NavItem from "./NavItem";
+import { LayoutDashboard, Archive, User, Settings, LogOut } from "lucide-react";
 
 function Sidebar() {
   return (
@@ -24,13 +25,14 @@ function Sidebar() {
         </span>
       </div>
 
-      <nav className="flex-1 space-y-2">
-        <NavLink to="/MyVotes" icon="🗳️" label="My Votes">
-          My Votes
-        </NavLink>
+      <nav className="flex flex-col gap-2">
+        <NavItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" />
+        <NavItem to="/MyVotes" icon={Archive} label="My Votes" />
+        <NavItem to="/profile" icon={User} label="My Profile" />
+        <NavItem to="/settings" icon={Settings} label="Settings" />
       </nav>
 
-      <div className="mt-auto bg-white/5 border border-white/10 rounded-2xl p-4">
+      {/* <div className="mt-auto bg-white/5 border border-white/10 rounded-2xl p-4">
         <p className="text-[10px] text-gray-500 uppercase font-bold mb-2 tracking-widest">
           Voting Power
         </p>
@@ -40,7 +42,7 @@ function Sidebar() {
         <div className="mt-3 w-full bg-gray-800 h-1 rounded-full overflow-hidden">
           <div className="bg-blue-500 h-full w-3/4"></div>
         </div>
-      </div>
+      </div> */}
     </aside>
   );
 }

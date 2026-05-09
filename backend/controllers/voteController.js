@@ -37,12 +37,13 @@ exports.getVote = catchAsync(async (req, res, next) => {
 });
 
 exports.getMyVotes = catchAsync(async (req, res, next) => {
-  const user = req.user.id;
+  const userId = req.user.id;
 
-  const votes = await Vote.find({ _id: userId });
+  const votes = await Vote.find({ voterId: userId });
 
   res.status(200).json({
     status: "success",
+    results: votes.length,
     data: votes,
   });
 });

@@ -25,7 +25,7 @@ function Header() {
         </span>
         <input
           type="text"
-          placeholder="Caută propuneri..."
+          placeholder="Search..."
           className="bg-white/5 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-blue-500/50 transition-all w-64"
         />
       </div>

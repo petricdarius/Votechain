@@ -9,11 +9,12 @@ import SignUp from "./pages/SignUp";
 import Election from "./pages/Election";
 import { Toaster } from "react-hot-toast";
 import MyVotes from "./pages/MyVotes";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000,
+      staleTime: 30 * 1000,
     },
   },
 });
@@ -24,7 +25,13 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes>
-            <Route element={<AppLayout />}>
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<Navigate replace to="dashboard" />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="elections/:id" element={<Election />} />
