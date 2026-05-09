@@ -50,7 +50,8 @@ exports.getMyVotes = catchAsync(async (req, res, next) => {
 exports.createVote = catchAsync(async (req, res, next) => {
   const election = await Election.findById(req.params.electionId);
   console.log(election);
-  if (!election || election.active === false)
+  // if (!election || election.active === false)
+  if (!election)
     return next(new AppError("Election doesn't exist or is not active.", 404));
   const candidate = await Candidate.findById(req.body.candidateId);
   if (!candidate || !candidate.electionId.equals(election.id))
