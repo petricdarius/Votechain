@@ -53,6 +53,7 @@ const userSchema = new mongoose.Schema({
       },
       message: "Invalid CNP.",
     },
+    passwordChangedAt: Date,
   },
   active: {
     type: Boolean,
@@ -85,13 +86,24 @@ function isCorrectCNP(CNP) {
   return control === parseInt(CNP[CNP.length - 1]);
 }
 
-userSchema.methods.checkPass = async (currPass, newPass) => {
+userSchema.methods.checkPass = async (newPass, currPass) => {
   return await bcrypt.compare(newPass, currPass);
 };
 
 userSchema.pre(/^find/, function () {
   this.find({ active: { $ne: false } });
 });
+
+userSchema.methods.changedPassAfter = function (JWT_TIMESTAMP) {
+  if (this.passwordChangedAt) {
+    const changedTimeStamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10,
+    );
+    return JWT_TIMESTAMP < changedTimeStamp;
+  }
+  return false;
+};
 
 const User = mongoose.model("User", userSchema);
 

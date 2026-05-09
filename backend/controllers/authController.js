@@ -54,7 +54,7 @@ exports.login = catchAsync(async (req, res, next) => {
     "+password",
   );
 
-  if (!user || !(await user.checkPass(user.password, password)))
+  if (!user || !(await user.checkPass(password, user.password)))
     return next(new AppError("Invalid credentials, please try again.", 400));
 
   createSendToken(user, 200, req, res);
@@ -86,6 +86,10 @@ exports.protect = catchAsync(async (req, res, next) => {
   const user = await User.findById(decoded.id);
   if (!user) return next(new AppError("The user no longer exists.", 401));
 
+  if (user.changedPassAfter(decoded.iat))
+    return next(
+      new AppError("Password has been changed, please log in again.", 400),
+    );
   req.user = user;
 
   next();
@@ -100,3 +104,15 @@ exports.restrictTo =
       );
     next();
   };
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+password");
+  if (!(await user.checkPass(req.body.passwordCurrent, user.password)))
+    return next(new AppError("Incorrect password, please try again.", 400));
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+
+  await user.save();
+
+  createSendToken(user, 200, req, res);
+});
