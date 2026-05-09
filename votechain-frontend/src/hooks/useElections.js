@@ -1,8 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import getElections, {
   getCandidates,
   getElectionCandidates,
+  voteCandidate,
 } from "../services/apiElections";
+
+import toast from "react-hot-toast";
 
 export default function useElections() {
   const { data: elections, isLoading } = useQuery({
@@ -32,4 +35,19 @@ export function useElectionCandidates(electionId) {
     },
   });
   return { electionCandidates, isLoading };
+}
+
+export function useVoteCandidate() {
+  const {
+    mutate: voteCandidateMutation,
+    isLoading,
+    error,
+  } = useMutation({
+    mutationFn: ({ id: electionId, selectedCandidate }) =>
+      voteCandidate(electionId, selectedCandidate),
+    onSuccess: () => {
+      toast.success("Votul a fost înregistrat cu succes!");
+    },
+  });
+  return { voteCandidateMutation, isLoading, error };
 }
