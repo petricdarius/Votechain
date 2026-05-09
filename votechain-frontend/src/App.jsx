@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignUp from "./pages/SignUp";
 import Election from "./pages/Election";
 import { Toaster } from "react-hot-toast";
+import MyVotes from "./pages/MyVotes";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,6 +28,7 @@ function App() {
               <Route index element={<Navigate replace to="dashboard" />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="elections/:id" element={<Election />} />
+              <Route path="MyVotes" element={<MyVotes />} />
             </Route>
 
             <Route path="login" element={<Login />} />

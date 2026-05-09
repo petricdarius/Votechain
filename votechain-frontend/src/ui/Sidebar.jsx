@@ -1,7 +1,8 @@
+import { NavLink } from "react-router-dom";
+
 function Sidebar() {
   return (
     <aside className="w-72 h-screen border-r border-white/5 bg-[#0B0E14] flex flex-col p-6 sticky top-0">
-      {/* Branding */}
       <div className="flex items-center gap-3 px-2 mb-12">
         <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
           <svg
@@ -23,16 +24,12 @@ function Sidebar() {
         </span>
       </div>
 
-      {/* Meniu */}
-      {/* <nav className="flex-1 space-y-2">
-        <NavItem icon="📊" label="Dashboard" active />
-        <NavItem icon="🗳️" label="Active Votes" />
-        <NavItem icon="📜" label="Proposals" />
-        <NavItem icon="💎" label="Rewards" />
-        <NavItem icon="⚙️" label="Settings" />
-      </nav> */}
+      <nav className="flex-1 space-y-2">
+        <NavLink to="/MyVotes" icon="🗳️" label="My Votes">
+          My Votes
+        </NavLink>
+      </nav>
 
-      {/* User Stats Card */}
       <div className="mt-auto bg-white/5 border border-white/10 rounded-2xl p-4">
         <p className="text-[10px] text-gray-500 uppercase font-bold mb-2 tracking-widest">
           Voting Power

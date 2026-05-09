@@ -30,9 +30,26 @@ export default function Login() {
         <div className="absolute w-[500px] h-[500px] bg-purple-600 opacity-20 blur-3xl rounded-full top-10 left-10"></div>
         <div className="absolute w-[400px] h-[400px] bg-blue-600 opacity-20 blur-3xl rounded-full bottom-10 right-10"></div>
 
-        <h1 className="text-white text-6xl font-bold mb-6 tracking-wide">
-          VoteChain
-        </h1>
+        <div className="flex items-center gap-3 px-2 mb-12">
+          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+            <svg
+              className="w-6 h-6 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <span className="text-[50px] font-black tracking-tighter text-white">
+            VOTE<span className="text-blue-500">CHAIN</span>
+          </span>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
