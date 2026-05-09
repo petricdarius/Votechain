@@ -96,6 +96,13 @@ exports.getMe = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.checkLogin = (req, res, next) => {
+  res.status(200).json({
+    status: "success",
+    data: req.user,
+  });
+};
+
 exports.getUser = factory.getOne(User);
 exports.deleteUser = factory.deleteOne(User);
 exports.getAllUsers = factory.getAll(User);
