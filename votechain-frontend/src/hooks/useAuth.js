@@ -8,14 +8,14 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function useAuth() {
-  const queyClient = useQueryClient();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const { mutate, isLoading } = useMutation({
     mutationFn: ({ email, password }) => loginApi({ email, password }),
     onSuccess: (data) => {
       localStorage.setItem("token", data.token);
-      queyClient.setQueryData(["user"], data.user);
+      queryClient.setQueryData(["user"], data.data.user);
       navigate("/dashboard", { replace: true });
     },
     onError: (error) => {
@@ -66,7 +66,7 @@ export function useLogout() {
 
 export function useCheckLogin() {
   const { isLoading, data: isAuthenticated } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["userAuth"],
     queryFn: getCurrentUser,
   });
   console.log(isAuthenticated);

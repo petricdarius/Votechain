@@ -7,7 +7,7 @@ function VotingCard({ election, index }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.2, delay: 0.1 }}
       whileHover={{ y: -5, scale: 1.02 }}
       className="relative group cursor-pointer"
     >
@@ -31,9 +31,9 @@ function VotingCard({ election, index }) {
               In Progress
             </span>
           </div>
-          <span className="text-gray-500 text-xs font-mono">
+          {/* <span className="text-gray-500 text-xs font-mono">
             ID: {election._id || "#001"}
-          </span>
+          </span> */}
         </div>
 
         <h3 className="text-xl font-bold mb-2 leading-tight">
@@ -41,7 +41,7 @@ function VotingCard({ election, index }) {
         </h3>
 
         {/* Bara de Progres Animată */}
-        <div className="mt-6 space-y-3">
+        {/* <div className="mt-6 space-y-3">
           <div className="flex justify-between text-xs font-mono text-gray-400">
             <span>Progress</span>
             <span>1.2M / 2M Tokens</span>
@@ -55,9 +55,16 @@ function VotingCard({ election, index }) {
               className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 to-indigo-400 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
             />
           </div>
-        </div>
+        </div> */}
+        <p className="text-gray-400 text-sm mt-2">
+          {election.description || "No description available."}
+        </p>
 
-        <div className="mt-8 pt-4 border-t border-white/5 flex justify-between items-end">
+        <p className="text-gray-400 text-sm mt-2">
+          No of candidates: {election.candidates?.length || 0}
+        </p>
+
+        <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-end">
           <div className="space-y-1">
             <p className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">
               Time Left
