@@ -58,6 +58,22 @@ exports.getResults = catchAsync(async (req, res, next) => {
   res.status(200).json(updated);
 });
 
+exports.checkVote = catchAsync(async (req, res) => {
+  const vote = await Vote.findOne({
+    voterId: req.user.id,
+    electionId: req.params.electionId,
+  });
+  if (vote)
+    return res.status(200).json({
+      status: "suceess",
+      canVote: false,
+    });
+  return res.status(200).json({
+    status: "suceess",
+    canVote: true,
+  });
+});
+
 exports.updateElection = handlerFactory.updateOne(Election);
 exports.deleteElection = handlerFactory.deleteOne(Election);
 exports.createElection = handlerFactory.createOne(Election);
