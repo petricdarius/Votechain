@@ -20,6 +20,8 @@ router
   .get(electionController.getAllElections)
   .post(authController.restrictTo("admin"), electionController.createElection);
 
+router.get("/checkVote/:electionId", electionController.checkVote)
+
 router.get("/:id/results", electionController.getResults);
 
 module.exports = router;
