@@ -1,3 +1,9 @@
+blockchain/node_modules
+blockchain/artifacts
+blockchain/cache
+blockchain/typechain
+blockchain/typechain-types
+
 backend/node_modules
 backend/config.env
 backend/package-lock.json
