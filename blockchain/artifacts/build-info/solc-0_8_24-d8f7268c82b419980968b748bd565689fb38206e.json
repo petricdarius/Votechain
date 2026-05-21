@@ -1,0 +1,42 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_24-d8f7268c82b419980968b748bd565689fb38206e",
+  "solcVersion": "0.8.24",
+  "solcLongVersion": "0.8.24+commit.e11b9ed9",
+  "compilerType": "solc",
+  "userSourceNameMap": {
+    "contracts/Election.sol": "project/contracts/Election.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "shanghai",
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/Election.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.24;\r\n\r\ncontract Votechain {\r\n    mapping(string => mapping(string => uint)) public votes;\r\n    mapping(string => mapping(string => bool)) public hasVoted;\r\n\r\n    function castVote(string memory _electionId, string memory _candidateId, string memory _userId) public {\r\n        require(!hasVoted[_electionId][_userId], \"Vot deja inregistrat!\");\r\n        \r\n        votes[_electionId][_candidateId]++;\r\n        hasVoted[_electionId][_userId] = true;\r\n    }\r\n\r\n    function getVotesForCandidate(string memory _electionId, string memory _candidateId) public view returns (uint) {\r\n        return votes[_electionId][_candidateId];\r\n    }\r\n}"
+      }
+    }
+  }
+}

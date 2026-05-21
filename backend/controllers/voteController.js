@@ -1,3 +1,54 @@
+const { ethers } = require("ethers");
+const Vote = require("../models/voteModel");
+const Election = require("../models/electionModel");
+const Candidate = require("../models/candidateModel");
+const User = require("../models/userModel");
+const catchAsync = require("../utils/catchAsync");
+const handlerFactory = require("./handlerFactory");
+const AppError = require("../utils/appError");
+
+exports.getVotes = handlerFactory.getAll(Vote, [
+  { path: "voterId" },
+  { path: "electionId" },
+  { path: "chosenCandidate" },
+]);
+
+exports.getVote = catchAsync(async (req, res, next) => {
+  const vote = await Vote.findById(req.params.id);
+  if (!vote) return next(new AppError("Invalid vote id.", 404));
+
+  const user = req.user;
+
+  if (req.user.role === "admin") {
+    return res.status(200).json({
+      status: "success",
+      data: vote,
+    });
+  }
+
+  const userId = user.id;
+  if (!vote.userId.equals(userId))
+    return next(
+      new AppError("You do not have permission to see this vote.", 400),
+    );
+  res.status(200).json({
+    status: "success",
+    data: vote,
+  });
+});
+
+exports.getMyVotes = catchAsync(async (req, res, next) => {
+  const userId = req.user.id;
+
+  const votes = await Vote.find({ voterId: userId });
+
+  res.status(200).json({
+    status: "success",
+    results: votes.length,
+    data: votes,
+  });
+});
+
 exports.createVote = catchAsync(async (req, res, next) => {
   const election = await Election.findById(req.params.electionId);
 
