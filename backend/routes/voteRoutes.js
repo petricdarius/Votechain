@@ -4,6 +4,8 @@ const voteController = require("../controllers/voteController");
 
 const router = express.Router();
 
+router.get("/election/:electionId/results", voteController.getElectionResults);
+
 router.use(authController.protect);
 
 router.get(
@@ -19,6 +21,7 @@ router.get(
 );
 
 router.get("/:id", voteController.getVote);
+
 router.post(
   "/election/:electionId",
   authController.restrictTo("voter"),

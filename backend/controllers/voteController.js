@@ -27,7 +27,7 @@ exports.getVote = catchAsync(async (req, res, next) => {
   }
 
   const userId = user.id;
-  if (!vote.userId.equals(userId))
+  if (!vote.voterId.equals(userId))
     return next(
       new AppError("You do not have permission to see this vote.", 400),
     );
@@ -104,5 +104,31 @@ exports.createVote = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: vote,
+  });
+});
+
+exports.getElectionResults = catchAsync(async (req, res, next) => {
+  const { electionId } = req.params;
+
+  const election = await Election.findById(electionId);
+  if (!election) {
+    return next(new AppError("Election not found", 404));
+  }
+
+  const results = await Vote.aggregate([
+    {
+      $match: { electionId: election._id },
+    },
+    {
+      $group: {
+        _id: "$chosenCandidate",
+        voteCount: { $sum: 1 },
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: results,
   });
 });
