@@ -9,6 +9,12 @@ router.get("/election/:electionId/results", voteController.getElectionResults);
 router.use(authController.protect);
 
 router.get(
+  "/election/:electionId/audit",
+  authController.restrictTo("admin"),
+  voteController.auditElection
+);
+
+router.get(
   "/allVotes",
   authController.restrictTo("admin"),
   voteController.getVotes,

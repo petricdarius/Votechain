@@ -132,3 +132,41 @@ exports.getElectionResults = catchAsync(async (req, res, next) => {
     data: results,
   });
 });
+exports.auditElection = catchAsync(async (req, res, next) => {
+  const { electionId } = req.params;
+
+  const election = await Election.findById(electionId);
+  if (!election) {
+    return next(new AppError("Election not found", 404));
+  }
+
+  const mongoVotesCount = await Vote.countDocuments({ electionId: election._id });
+
+  const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+  const abi = [
+    "function getVotesCount(string memory _electionId) public view returns (uint256)",
+  ];
+  const contract = new ethers.Contract(
+    process.env.CONTRACT_ADDRESS,
+    abi,
+    provider
+  );
+
+  const blockchainVotesRaw = await contract.getVotesCount(electionId.toString());
+  const blockchainVotesCount = Number(blockchainVotesRaw);
+
+  const isConsistent = mongoVotesCount === blockchainVotesCount;
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      electionId,
+      mongoVotesCount,
+      blockchainVotesCount,
+      isConsistent,
+      statusMessage: isConsistent 
+        ? "Integritate 100%. Datele din MongoDB corespund cu registrul Blockchain." 
+        : "Alerta de frauda! Numărul de voturi din baza de date a fost manipulat."
+    }
+  });
+});
