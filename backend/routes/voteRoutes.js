@@ -1,17 +1,18 @@
 const express = require("express");
 const authController = require("../controllers/authController");
 const voteController = require("../controllers/voteController");
+const electionController = require("../controllers/electionController");
 
 const router = express.Router();
 
-router.get("/election/:electionId/results", voteController.getElectionResults);
+router.get("/election/:electionId/results", electionController.getResults);
 
 router.use(authController.protect);
 
 router.get(
   "/election/:electionId/audit",
   authController.restrictTo("admin"),
-  voteController.auditElection
+  voteController.auditElection,
 );
 
 router.get(

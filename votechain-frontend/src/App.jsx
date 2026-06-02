@@ -11,6 +11,9 @@ import { Toaster } from "react-hot-toast";
 import MyVotes from "./pages/MyVotes";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminElections from "./pages/AdminElections";
+import ElectionResults from "./ui/ElectionResults";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +38,12 @@ function App() {
               }
             >
               <Route index element={<Navigate replace to="dashboard" />} />
+              <Route path="admin/dashboard" element={<AdminDashboard />} />
+              <Route path="admin/elections" element={<AdminElections />} />
+              <Route
+                path="elections/:id/results"
+                element={<ElectionResults />}
+              />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="elections/:id" element={<Election />} />
               <Route path="MyVotes" element={<MyVotes />} />

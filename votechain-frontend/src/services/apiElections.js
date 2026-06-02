@@ -61,3 +61,22 @@ export async function voteCandidate(electionId, candidateId) {
   }
   return result;
 }
+
+export const getElectionResults = async (electionId) => {
+  const response = await fetch(
+    `http://127.0.0.1:5000/api/v1/elections/${electionId}/results`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    },
+  );
+
+  const result = await response.json();
+  if (!response.ok)
+    throw new Error(result.message || "Eroare la încărcarea rezultatelor.");
+
+  return result.data || result;
+};

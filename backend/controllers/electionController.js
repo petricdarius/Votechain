@@ -21,6 +21,11 @@ exports.getResults = catchAsync(async (req, res, next) => {
 
   const candidates = await Vote.aggregate([
     {
+      $match: {
+        electionId: election._id,
+      },
+    },
+    {
       $group: {
         _id: "$chosenCandidate",
         votes: { $sum: 1 },

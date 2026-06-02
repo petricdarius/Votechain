@@ -6,6 +6,7 @@ import {
   signUpApi,
 } from "../services/apiAuth";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function useAuth() {
   const queryClient = useQueryClient();
@@ -15,11 +16,19 @@ export default function useAuth() {
     mutationFn: ({ email, password }) => loginApi({ email, password }),
     onSuccess: (data) => {
       localStorage.setItem("token", data.token);
-      queryClient.setQueryData(["user"], data.data.user);
-      navigate("/dashboard", { replace: true });
+      const user = data.data.user;
+      queryClient.setQueryData(["user"], user);
+      if (user.role === "admin") {
+        navigate("/admin/dashboard", { replace: true });
+      } else if (user.role === "user") {
+        navigate("/dashboard", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
     },
     onError: (error) => {
       console.error(error);
+      toast.error(`Eroare: parola sau email incorect.`);
     },
   });
 

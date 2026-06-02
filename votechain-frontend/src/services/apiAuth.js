@@ -41,6 +41,29 @@ export async function logout() {
   return result;
 }
 
+export const getMeUser = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) return null;
+
+  const response = await fetch("http://127.0.0.1:5000/api/v1/users/getMe", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    localStorage.removeItem("token");
+    throw new Error("Sesiune expirată.");
+  }
+
+  const result = await response.json();
+
+  return result.data;
+};
+
 export async function getCurrentUser() {
   let response = await fetch("http://127.0.0.1:5000/api/v1/users/checkLogin", {
     method: "GET",

@@ -1,7 +1,23 @@
+import { useQuery } from "@tanstack/react-query";
 import NavItem from "./NavItem";
 import { LayoutDashboard, Archive, User, Settings, LogOut } from "lucide-react";
 
 function Sidebar() {
+  const { data: user } = useQuery({ queryKey: ["user"] });
+
+  const voterLinks = [
+    { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { to: "/MyVotes", icon: Archive, label: "My Votes" },
+  ];
+
+  const adminLinks = [
+    { to: "/admin/dashboard", icon: LayoutDashboard, label: "Admin Dashboard" },
+    { to: "/admin/elections", icon: Archive, label: "Manage Elections" },
+    { to: "/admin/users", icon: User, label: "Manage Users" },
+  ];
+
+  const navLinks = user?.role === "admin" ? adminLinks : voterLinks;
+
   return (
     <aside className="w-72 h-screen border-r border-white/5 bg-[#0B0E14] flex flex-col p-6 sticky top-0">
       <div className="flex items-center gap-3 px-2 mb-12">
@@ -26,10 +42,14 @@ function Sidebar() {
       </div>
 
       <nav className="flex flex-col gap-2">
-        <NavItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" />
-        <NavItem to="/MyVotes" icon={Archive} label="My Votes" />
-        <NavItem to="/profile" icon={User} label="My Profile" />
-        <NavItem to="/settings" icon={Settings} label="Settings" />
+        {navLinks.map((link) => (
+          <NavItem
+            key={link.to}
+            to={link.to}
+            icon={link.icon}
+            label={link.label}
+          />
+        ))}
       </nav>
 
       {/* <div className="mt-auto bg-white/5 border border-white/10 rounded-2xl p-4">
