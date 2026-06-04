@@ -14,6 +14,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminElections from "./pages/AdminElections";
 import ElectionResults from "./ui/ElectionResults";
+import AdminUsers from "./pages/AdminUsers";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,7 @@ function App() {
               <Route index element={<Navigate replace to="dashboard" />} />
               <Route path="admin/dashboard" element={<AdminDashboard />} />
               <Route path="admin/elections" element={<AdminElections />} />
+              <Route path="admin/users" element={<AdminUsers />} />
               <Route
                 path="elections/:id/results"
                 element={<ElectionResults />}
@@ -60,21 +62,31 @@ function App() {
           gutter={12}
           containerStyle={{
             margin: "8px",
-            backgroundColor: "var(--color-grey-0)",
           }}
           toastOptions={{
+            style: {
+              fontSize: "15px",
+              maxWidth: "500px",
+              padding: "14px 20px",
+              backgroundColor: "#121620",
+              color: "#f3f4f6",
+              borderRadius: "12px",
+            },
+
             success: {
               duration: 3000,
+              style: {
+                border: "1px solid rgba(34, 197, 94, 0.4)",
+                boxShadow: "0 0 15px rgba(34, 197, 94, 0.15)",
+              },
             },
+
             error: {
               duration: 5000,
-            },
-            style: {
-              fontSize: "16px",
-              maxWidth: "500px",
-              padding: "16px 24px",
-              backgroundColor: "var(--color-grey-0)",
-              color: "var(--color-grey-700)",
+              style: {
+                border: "1px solid rgba(239, 68, 68, 0.4)",
+                boxShadow: "0 0 15px rgba(239, 68, 68, 0.15)",
+              },
             },
           }}
         />

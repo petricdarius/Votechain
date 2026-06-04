@@ -21,7 +21,7 @@ export default function AdminDashboard() {
 
   const handleAddCandidateToLocalList = () => {
     if (!candFirstName || !candLastName || !candParty) {
-      return toast.error("Numele, prenumele și partidul sunt obligatorii.");
+      return toast.error("First name, last name and party are required.");
     }
 
     const newCandidate = {
@@ -38,7 +38,7 @@ export default function AdminDashboard() {
     setCandLastName("");
     setCandParty("");
     setCandDesc("");
-    toast.success("Candidat adăugat în listă!");
+    toast.success("Candidate added to the list!");
   };
 
   const handleRemoveCandidateFromLocalList = (id) => {
@@ -61,7 +61,7 @@ export default function AdminDashboard() {
     onSuccess: () => {
       queryClient.invalidateQueries(["elections"]);
       toast.success(
-        "Evenimentul electoral și candidații au fost publicați cu succes!",
+        "The electoral event and candidates have been published successfully!",
       );
 
       setTitle("");
@@ -71,7 +71,7 @@ export default function AdminDashboard() {
       setCandidates([]);
     },
     onError: (err) => {
-      toast.error(err.message || "A apărut o eroare la salvarea pachetului.");
+      toast.error(err.message || "An error occurred while saving the package.");
     },
   });
 
@@ -79,17 +79,15 @@ export default function AdminDashboard() {
     e.preventDefault();
 
     if (!title || !description || !startDate || !endDate) {
-      return toast.error("Completează toate datele alegerilor.");
+      return toast.error("Complete all election fields before submitting.");
     }
     if (candidates.length < 2) {
       return toast.error(
-        "Sistemul necesită cel puțin 2 candidați pentru o alegere.",
+        "The system requires at least 2 candidates for an election.",
       );
     }
     if (new Date(startDate) >= new Date(endDate)) {
-      return toast.error(
-        "Data de încheiere trebuie să fie după data de început.",
-      );
+      return toast.error("The end date must be after the start date.");
     }
 
     createElectionMutation.mutate({
@@ -100,54 +98,51 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-[#0B0E14] text-white p-8 font-sans">
-      {/* Header Dashboard */}
       <div className="mb-10">
         <h1 className="text-3xl font-black tracking-tight uppercase">
           Admin <span className="text-blue-500">Voting Control</span>
         </h1>
         <p className="text-sm text-gray-400 font-mono mt-1">
-          Sistem de management securizat pentru procesul electoral.
+          Secure management system for the electoral process.
         </p>
       </div>
 
-      {/* COLOANA 1: Formularul de Creare */}
       <div className="lg:col-span-1 bg-[#121620]/60 border border-white/5 backdrop-blur-xl p-6 rounded-2xl shadow-xl h-fit">
         <div className="flex items-center gap-2 mb-6">
           <Plus className="text-blue-400 w-5 h-5" />
           <h2 className="text-lg font-bold uppercase tracking-wider text-gray-200">
-            Creează Alegeri
+            Create New Election
           </h2>
         </div>
 
         <form onSubmit={handleSubmitFinal} className="space-y-6">
-          {/* SECȚIUNEA 1: Datele Alegerilor */}
           <div className="bg-[#121620]/60 border border-white/5 p-6 rounded-2xl backdrop-blur-xl shadow-xl">
             <h2 className="text-sm font-bold uppercase tracking-wider text-blue-400 mb-5 flex items-center gap-2">
-              <Calendar className="w-4 h-4" /> 1. Configurare Eveniment
+              <Calendar className="w-4 h-4" /> 1. Configure Election Details
             </h2>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1 pl-1">
-                  Titlu Eveniment
+                  Election Title
                 </label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Ex: Alegeri Prezidențiale 2026"
+                  placeholder="Ex: Presidential Elections 2026"
                   className="w-full bg-[#1A1F2C] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500/50 transition-colors"
                 />
               </div>
 
               <div>
                 <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1 pl-1">
-                  Descriere
+                  Description
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Regulamentul sau descrierea acestui scrutin..."
+                  placeholder="Election regulations or description..."
                   rows="3"
                   className="w-full bg-[#1A1F2C] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500/50 resize-none transition-colors"
                 />
@@ -156,7 +151,7 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1 pl-1">
-                    Dată Început
+                    Start Date
                   </label>
                   <input
                     type="datetime-local"
@@ -167,7 +162,7 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1 pl-1">
-                    Dată Încheiere
+                    End Date
                   </label>
                   <input
                     type="datetime-local"
@@ -180,37 +175,35 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* SECȚIUNEA 2: Candidați */}
           <div className="bg-[#121620]/60 border border-white/5 p-6 rounded-2xl backdrop-blur-xl shadow-xl space-y-5">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2">
-                <UserPlus className="w-4 h-4" /> 2. Înscriere Candidați
+                <UserPlus className="w-4 h-4" /> 2. Register Candidates
               </h2>
               <span className="text-xs font-mono text-gray-500">
                 Total: {candidates.length}
               </span>
             </div>
 
-            {/* Sub-formularul pentru adăugare candidat */}
             <div className="p-4 bg-[#1A1F2C]/50 border border-white/5 rounded-xl space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <input
                   type="text"
-                  placeholder="Prenume"
+                  placeholder="First Name"
                   value={candFirstName}
                   onChange={(e) => setCandFirstName(e.target.value)}
                   className="bg-[#1A1F2C] border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500/50"
                 />
                 <input
                   type="text"
-                  placeholder="Nume de Familie"
+                  placeholder="Last Name"
                   value={candLastName}
                   onChange={(e) => setCandLastName(e.target.value)}
                   className="bg-[#1A1F2C] border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500/50"
                 />
                 <input
                   type="text"
-                  placeholder="Partid Politic"
+                  placeholder="Political Party"
                   value={candParty}
                   onChange={(e) => setCandParty(e.target.value)}
                   className="bg-[#1A1F2C] border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500/50"
@@ -220,7 +213,7 @@ export default function AdminDashboard() {
               <div className="flex gap-3">
                 <input
                   type="text"
-                  placeholder="Scurtă descriere / Slogan (opțional)"
+                  placeholder="Short Description / Slogan (optional)"
                   value={candDesc}
                   onChange={(e) => setCandDesc(e.target.value)}
                   className="flex-1 bg-[#1A1F2C] border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500/50"
@@ -230,12 +223,11 @@ export default function AdminDashboard() {
                   onClick={handleAddCandidateToLocalList}
                   className="bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500 hover:text-white px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-1 min-w-[120px]"
                 >
-                  <Plus className="w-4 h-4" /> Adaugă
+                  <Plus className="w-4 h-4" /> Add Candidate
                 </button>
               </div>
             </div>
 
-            {/* Lista candidaților pregătiți */}
             {candidates.length > 0 && (
               <div className="space-y-2 mt-4">
                 {candidates.map((c, index) => (
@@ -267,24 +259,19 @@ export default function AdminDashboard() {
             )}
           </div>
 
-          {/* Butonul Final de Salvare */}
           <button
             type="submit"
             disabled={createElectionMutation.isPending}
             className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl text-sm uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-blue-600/20 flex justify-center items-center gap-2"
           >
             {createElectionMutation.isPending ? (
-              <span className="animate-pulse">
-                Se procesează pachetul electoral...
-              </span>
+              <span className="animate-pulse">Creating new election...</span>
             ) : (
-              "Lansează Alegerile"
+              "Create New Election"
             )}
           </button>
         </form>
       </div>
-
-      {/* COLOANA 2 & 3: Lista și Controlul Alegerilor */}
     </div>
   );
 }

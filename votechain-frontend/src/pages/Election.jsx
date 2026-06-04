@@ -58,10 +58,9 @@ function Election() {
             </p>
           </header>
 
-          {/* Lista de Candidați / Opțiuni */}
           <div className="space-y-4">
             <h4 className="text-sm font-bold text-blue-400 uppercase tracking-widest">
-              Selectează Opțiunea
+              Select Your Candidate
             </h4>
 
             {election.data.doc.candidates.map((candidate) => (
@@ -98,7 +97,7 @@ function Election() {
                       "bg-blue-500 text-white",
                   )}
                 >
-                  SELECTEAZĂ
+                  Select
                 </button>
               </motion.div>
             ))}
@@ -110,7 +109,9 @@ function Election() {
               disabled={isVoting}
               className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-2xl shadow-lg shadow-blue-600/20 transition-all uppercase tracking-widest"
             >
-              {isVoting ? "Se procesează..." : "Confirmă Votul pe Blockchain"}
+              {isVoting
+                ? "Processing..."
+                : "Confirm the Vote on the Blockchain"}
             </button>
           </div>
         </motion.div>

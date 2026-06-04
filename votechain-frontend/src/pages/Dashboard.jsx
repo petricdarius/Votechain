@@ -1,15 +1,16 @@
-import useElections, {
-  useCandidates,
-  useElectionCandidates,
-} from "../hooks/useElections";
+import useElections from "../hooks/useElections";
 import VotingCard from "./VotingCard";
 
 function Dashboard() {
   const { elections, isLoading } = useElections();
-  const { candidates, isLoading: isCandidatesLoading } = useCandidates();
+
+  const sortedElections = elections?.data?.docs
+    .sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
+    .filter((election) => new Date(election.endDate) > new Date());
+
   console.log(elections);
 
-  if (isLoading || isCandidatesLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <>
@@ -21,18 +22,9 @@ function Dashboard() {
             transparent elections.
           </p>
         </div>
-
-        <div className="flex gap-2">
-          <button className="px-4 py-2 text-white bg-white/5 border border-white/10 rounded-lg text-sm hover:bg-white/10 transition-all">
-            Filter
-          </button>
-          <button className="px-4 py-2 text-white bg-blue-600 border border-blue-600 rounded-lg text-sm font-bold hover:bg-blue-500 transition-all">
-            New Proposal
-          </button>
-        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {elections.data.docs.map((election, index) => (
+        {sortedElections?.map((election, index) => (
           <VotingCard key={election._id} election={election} index={index} />
         ))}
       </div>

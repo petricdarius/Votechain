@@ -40,7 +40,15 @@ exports.getVote = catchAsync(async (req, res, next) => {
 exports.getMyVotes = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
 
-  const votes = await Vote.find({ voterId: userId });
+  const votes = await Vote.find({ voterId: userId })
+    .populate({
+      path: "electionId",
+      select: "title description startDate endDate",
+    })
+    .populate({
+      path: "chosenCandidate",
+      select: "firstName lastName party",
+    });
 
   res.status(200).json({
     status: "success",
@@ -140,7 +148,9 @@ exports.auditElection = catchAsync(async (req, res, next) => {
     return next(new AppError("Election not found", 404));
   }
 
-  const mongoVotesCount = await Vote.countDocuments({ electionId: election._id });
+  const mongoVotesCount = await Vote.countDocuments({
+    electionId: election._id,
+  });
 
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
   const abi = [
@@ -149,10 +159,12 @@ exports.auditElection = catchAsync(async (req, res, next) => {
   const contract = new ethers.Contract(
     process.env.CONTRACT_ADDRESS,
     abi,
-    provider
+    provider,
   );
 
-  const blockchainVotesRaw = await contract.getVotesCount(electionId.toString());
+  const blockchainVotesRaw = await contract.getVotesCount(
+    electionId.toString(),
+  );
   const blockchainVotesCount = Number(blockchainVotesRaw);
 
   const isConsistent = mongoVotesCount === blockchainVotesCount;
@@ -164,9 +176,9 @@ exports.auditElection = catchAsync(async (req, res, next) => {
       mongoVotesCount,
       blockchainVotesCount,
       isConsistent,
-      statusMessage: isConsistent 
-        ? "Integritate 100%. Datele din MongoDB corespund cu registrul Blockchain." 
-        : "Alerta de frauda! Numărul de voturi din baza de date a fost manipulat."
-    }
+      statusMessage: isConsistent
+        ? "Integritate 100%. Datele din MongoDB corespund cu registrul Blockchain."
+        : "Alerta de frauda! Numărul de voturi din baza de date a fost manipulat.",
+    },
   });
 });

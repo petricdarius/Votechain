@@ -3,6 +3,12 @@ import formatDateRange from "../helpers/formatDate";
 import { Link } from "react-router-dom";
 
 function VotingCard({ election, index }) {
+  const now = new Date();
+  const start = new Date(election.startDate);
+
+  const hasNotStarted = now < start;
+  const isActive = !hasNotStarted;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -22,14 +28,29 @@ function VotingCard({ election, index }) {
       <div className="relative flex flex-col bg-[#151A22]/90 backdrop-blur-xl border border-white/10 p-6 rounded-2xl text-white h-full">
         <div className="flex justify-between items-start mb-4">
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20">
-            <motion.span
-              animate={{ scale: [1, 1.5, 1] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-              className="w-2 h-2 bg-blue-400 rounded-full"
-            />
-            <span className="text-blue-400 text-[10px] font-bold uppercase tracking-widest">
-              In Progress
-            </span>
+            {isActive ? (
+              <>
+                <motion.span
+                  animate={{ scale: [1, 1.5, 1] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                  className="w-2 h-2 bg-green-400 rounded-full"
+                />
+                <span className="text-green-400 text-[10px] font-bold uppercase tracking-widest">
+                  Active
+                </span>
+              </>
+            ) : (
+              <>
+                <motion.span
+                  animate={{ scale: [1, 1.5, 1] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                  className="w-2 h-2 bg-blue-400 rounded-full"
+                />
+                <span className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">
+                  Upcoming
+                </span>
+              </>
+            )}
           </div>
           {/* <span className="text-gray-500 text-xs font-mono">
             ID: {election._id || "#001"}
@@ -40,7 +61,6 @@ function VotingCard({ election, index }) {
           {election.title || "Election"}
         </h3>
 
-        {/* Bara de Progres Animată */}
         {/* <div className="mt-6 space-y-3">
           <div className="flex justify-between text-xs font-mono text-gray-400">
             <span>Progress</span>
@@ -74,12 +94,14 @@ function VotingCard({ election, index }) {
             </p>
           </div>
 
-          <Link
-            className="px-4 py-2 text-center bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-colors shadow-lg shadow-blue-900/20"
-            to={`/elections/${election._id}`}
-          >
-            VOTE NOW
-          </Link>
+          {isActive && (
+            <Link
+              className="px-4 py-2 text-center bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-colors shadow-lg shadow-blue-900/20"
+              to={`/elections/${election._id}`}
+            >
+              VOTE NOW
+            </Link>
+          )}
         </div>
       </div>
     </motion.div>

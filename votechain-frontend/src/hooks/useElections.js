@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import getElections, {
   getCandidates,
   getElectionCandidates,
@@ -38,6 +38,7 @@ export function useElectionCandidates(electionId) {
 }
 
 export function useVoteCandidate() {
+  const queryClient = useQueryClient();
   const {
     mutate: voteCandidateMutation,
     isLoading,
@@ -47,6 +48,13 @@ export function useVoteCandidate() {
       voteCandidate(electionId, selectedCandidate),
     onSuccess: () => {
       toast.success("Votul a fost înregistrat cu succes!");
+      queryClient.invalidateQueries(["myVotes"]);
+    },
+    onError: (error) => {
+      console.error("Eroare la votare:", error);
+      toast.error(
+        error?.message || "A apărut o eroare la înregistrarea votului.",
+      );
     },
   });
   return { voteCandidateMutation, isLoading, error };
