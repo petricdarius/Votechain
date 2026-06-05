@@ -35,4 +35,6 @@ router.post(
   voteController.createVote,
 );
 
+router.get("/", authController.restrictTo("admin"), voteController.getVotes);
+
 module.exports = router;
